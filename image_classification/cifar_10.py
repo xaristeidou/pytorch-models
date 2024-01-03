@@ -74,3 +74,19 @@ class Net(torch.nn.Module):
             in_features = 128,
             out_features = 10
         )
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = torch.nn.functional.relu(x)
+        x = self.conv2(x)
+        x = torch.nn.functional.relu(x)
+        x = self.conv3(x)
+        x = torch.nn.functional.relu(x)
+        x = torch.nn.functional.max_pool2d(x, 2)
+        x = x.view(x.size(0), -1)
+        x = self.fc1(x)
+        x = torch.nn.functional.relu(x)
+        x = self.fc2(x)
+
+        return x
+    
