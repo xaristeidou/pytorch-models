@@ -25,7 +25,7 @@ test_dataset = datasets.CIFAR10(
 )
 
 
-batch_size = 64
+batch_size = 32
 
 train_loader = torch.utils.data.DataLoader(
     dataset = train_dataset,
@@ -37,3 +37,27 @@ test_loader = torch.utils.data.DataLoader(
     batch_size = batch_size,
     shuffle = False
 )
+
+
+class Net(torch.nn.Module):
+    def __init__(self):
+        super(Net, self).__init__()
+
+        self.conv1 = torch.nn.Conv2d(
+            in_channels = 3,
+            out_channels = 32,
+            kernel_size = 3,
+            padding = 1,
+        )
+        self.conv2 = torch.nn.Conv2d(
+            in_channels = 32,
+            out_channels = 64,
+            kernel_size = 3,
+            padding = 1,
+        )
+        self.conv3 = torch.nn.Conv2d(
+            in_channels = 64,
+            out_channels = 128,
+            kernel_size = 3,
+            padding = 1,
+        )
