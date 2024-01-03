@@ -24,13 +24,16 @@ test_dataset = datasets.CIFAR10(
     download = True
 )
 
+
+batch_size = 64
+
 train_loader = torch.utils.data.DataLoader(
     dataset = train_dataset,
-    batch_size = 64,
+    batch_size = batch_size,
     shuffle = True
 )
 test_loader = torch.utils.data.DataLoader(
     dataset = test_dataset,
-    batch_size = 64,
+    batch_size = batch_size,
     shuffle = False
 )
