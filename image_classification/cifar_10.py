@@ -68,5 +68,9 @@ class Net(torch.nn.Module):
         )
         self.fc2 = torch.nn.Linear(
             in_features = 512,
+            out_features = 128
+        )
+        self.fc3 = torch.nn.Linear(
+            in_features = 128,
             out_features = 10
         )
