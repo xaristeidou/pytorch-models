@@ -17,3 +17,20 @@ train_dataset = datasets.CIFAR10(
     transform = transform,
     download = False
 )
+test_dataset = datasets.CIFAR10(
+    root = "./data",
+    train = False,
+    transform = transform,
+    download = True
+)
+
+train_loader = torch.utils.data.DataLoader(
+    dataset = train_dataset,
+    batch_size = 64,
+    shuffle = True
+)
+test_loader = torch.utils.data.DataLoader(
+    dataset = test_dataset,
+    batch_size = 64,
+    shuffle = False
+)
