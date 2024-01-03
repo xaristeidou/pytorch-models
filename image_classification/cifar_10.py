@@ -1,3 +1,4 @@
+import cv2
 import torch
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
@@ -25,7 +26,7 @@ test_dataset = datasets.CIFAR10(
 )
 
 
-batch_size = 32
+batch_size = 64
 
 train_loader = torch.utils.data.DataLoader(
     dataset = train_dataset,
@@ -60,4 +61,12 @@ class Net(torch.nn.Module):
             out_channels = 128,
             kernel_size = 3,
             padding = 1,
+        )
+        self.fc1 = torch.nn.Linear(
+            in_features = 16 * 16 * 128,
+            out_features = 512
+        )
+        self.fc2 = torch.nn.Linear(
+            in_features = 512,
+            out_features = 10
         )
