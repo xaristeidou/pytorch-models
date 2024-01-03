@@ -99,3 +99,14 @@ optimizer = torch.optim.Adam(
     lr = learning_rate
 )
 
+best_accuracy = 0
+num_epochs = 20
+for epoch in range(num_epochs):
+    for i, (images, labels) in enumerate(train_loader):
+        images = images.to(device)
+        labels = labels.to(device)
+
+        optimizer.zero_grad()
+
+        outputs = model(images)
+        loss = criterion(outputs, labels)
