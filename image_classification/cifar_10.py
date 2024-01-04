@@ -147,3 +147,9 @@ for epoch in range(num_epochs):
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
         accuracy = 100 * correct / total
+
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), "best_model.pth")
+
+        
