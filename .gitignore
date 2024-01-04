@@ -9,6 +9,9 @@ __pycache__/
 # Folders
 /image_classification/data
 
+# Models
+*.pth
+
 # Distribution / packaging
 .Python
 build/
