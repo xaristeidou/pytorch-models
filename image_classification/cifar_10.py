@@ -2,6 +2,7 @@ import cv2
 import torch
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -103,7 +104,7 @@ optimizer = torch.optim.Adam(
 
 best_accuracy = 0
 num_epochs = 20
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
     for i, (images, labels) in enumerate(train_loader):
         images = images.to(device)
         labels = labels.to(device)
@@ -151,5 +152,3 @@ for epoch in range(num_epochs):
         if accuracy > best_accuracy:
             best_accuracy = accuracy
             torch.save(model.state_dict(), "best_model.pth")
-
-        
