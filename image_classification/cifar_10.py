@@ -144,4 +144,6 @@ for epoch in range(num_epochs):
             '''
             _, predicted = torch.max(outputs.data, 1)
 
-            
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+        accuracy = 100 * correct / total
