@@ -151,4 +151,6 @@ for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
 
         if accuracy > best_accuracy:
             best_accuracy = accuracy
-            torch.save(model.state_dict(), "best_model.pth")
+            torch.save(model.state_dict(), "best_model.pt")
+    
+    print(f"Accuracy {accuracy:.2f}")
