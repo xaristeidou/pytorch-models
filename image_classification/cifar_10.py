@@ -87,6 +87,8 @@ class Net(torch.nn.Module):
         x = self.fc1(x)
         x = torch.nn.functional.relu(x)
         x = self.fc2(x)
+        x = torch.nn.functional.leaky_relu(x, negative_slope=0.05)
+        x = self.fc3(x)
 
         return x
     
@@ -108,5 +110,38 @@ for epoch in range(num_epochs):
 
         optimizer.zero_grad()
 
+        '''
+        Outputs predictions tensor with shape as the output of model's final layer
+        and batch_size
+        '''
         outputs = model(images)
+
+        '''
+        Outputs result of loss function in tensor
+        '''
         loss = criterion(outputs, labels)
+
+        loss.backward()
+        optimizer.step()
+
+    with torch.no_grad():
+        correct = 0
+        total = 0
+
+        for images,labels in test_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+
+            '''
+            We pass the images in tensor with shape of batch_size and then
+            we get the outputs in tesnor of batch_size and dimensions of model's
+            last layer
+            '''
+            outputs = model(images)
+
+            '''
+            Outputs the position indices (class) for each predicted images
+            '''
+            _, predicted = torch.max(outputs.data, 1)
+
+            
