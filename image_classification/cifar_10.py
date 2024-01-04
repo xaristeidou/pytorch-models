@@ -2,6 +2,7 @@ import cv2
 import torch
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -68,10 +69,6 @@ class Net(torch.nn.Module):
         )
         self.fc2 = torch.nn.Linear(
             in_features = 512,
-            out_features = 128
-        )
-        self.fc3 = torch.nn.Linear(
-            in_features = 128,
             out_features = 10
         )
 
@@ -101,12 +98,53 @@ optimizer = torch.optim.Adam(
 
 best_accuracy = 0
 num_epochs = 20
-for epoch in range(num_epochs):
+for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
     for i, (images, labels) in enumerate(train_loader):
         images = images.to(device)
         labels = labels.to(device)
 
         optimizer.zero_grad()
 
+        '''
+        Outputs predictions tensor with shape as the output of model's final layer
+        and batch_size
+        '''
         outputs = model(images)
+
+        '''
+        Outputs result of loss function in tensor
+        '''
         loss = criterion(outputs, labels)
+
+        loss.backward()
+        optimizer.step()
+
+    with torch.no_grad():
+        correct = 0
+        total = 0
+
+        for images,labels in test_loader:
+            images = images.to(device)
+            labels = labels.to(device)
+
+            '''
+            We pass the images in tensor with shape of batch_size and then
+            we get the outputs in tesnor of batch_size and dimensions of model's
+            last layer
+            '''
+            outputs = model(images)
+
+            '''
+            Outputs the position indices (class) for each predicted images
+            '''
+            _, predicted = torch.max(outputs.data, 1)
+
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+        accuracy = 100 * correct / total
+
+        if accuracy > best_accuracy:
+            best_accuracy = accuracy
+            torch.save(model.state_dict(), "best_model.pt")
+    
+    print(f"Accuracy {accuracy:.2f}")
