@@ -148,3 +148,10 @@ for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
             torch.save(model.state_dict(), "best_model.pt")
     
     print(f"Accuracy {accuracy:.2f}")
+
+
+def predict(image_num):
+    image, label = test_dataset[image_num]
+    image = image.to(device)
+
+    model.eval()
