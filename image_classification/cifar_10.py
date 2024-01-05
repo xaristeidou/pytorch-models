@@ -155,3 +155,9 @@ def predict(image_num):
     image = image.to(device)
 
     model.eval()
+    with torch.no_grad():
+        output = model(image.unsqueeze(0))
+        predicted_label = torch.argmax(output, dim = 1)
+
+    print(f"True label: {label}")
+    print(f"Predicted label: {predicted_label.item()}")
