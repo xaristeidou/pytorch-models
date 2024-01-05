@@ -1,7 +1,7 @@
-import cv2
 import torch
 import torchvision.datasets as datasets
 import torchvision.transforms as transforms
+import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -161,3 +161,8 @@ def predict(image_num):
 
     print(f"True label: {label}")
     print(f"Predicted label: {predicted_label.item()}")
+
+    plt.imshow(test_dataset.data[image_num])
+    plt.title(f"Model prediction: {test_dataset.classes[predicted_label.item()]}")
+    plt.xlabel(f"True label: {train_dataset.classes[label]}")
+    plt.show()
