@@ -42,6 +42,9 @@ test_loader = torch.utils.data.DataLoader(
 
 
 class Net(torch.nn.Module):
+    '''
+    Image classification model, class object, used for CIFAR-10 dataset
+    '''
     def __init__(self):
         super(Net, self).__init__()
 
@@ -163,7 +166,17 @@ def train(
         
     print(f"Final Test Accuracy: {accuracy:.2f} %")
 
-def predict(image_num):
+def predict(
+        image_num: int
+) -> None:
+    '''
+    Run inference and plot an image with prediciton vs true label
+
+    -Args:
+        image_num (int): image number index
+    -Returns:
+        (None): Shows prediction
+    '''
     image, label = test_dataset[image_num]
     image = image.to(device)
 
