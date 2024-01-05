@@ -161,7 +161,7 @@ def train(
                 best_accuracy = accuracy
                 torch.save(model.state_dict(), "best_model.pt")
         
-        print(f"Accuracy {accuracy:.2f}")
+    print(f"Final Test Accuracy: {accuracy:.2f} %")
 
 def predict(image_num):
     image, label = test_dataset[image_num]
