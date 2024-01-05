@@ -199,3 +199,4 @@ train(
     num_epochs = 30,
     learning_rate = 0.001
 )
+predict(0)
