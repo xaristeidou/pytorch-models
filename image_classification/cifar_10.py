@@ -42,6 +42,9 @@ test_loader = torch.utils.data.DataLoader(
 
 
 class Net(torch.nn.Module):
+    '''
+    Image classification model, class object, used for CIFAR-10 dataset
+    '''
     def __init__(self):
         super(Net, self).__init__()
 
@@ -88,19 +91,10 @@ class Net(torch.nn.Module):
         return x
     
 
-model = Net().to(device)
-criterion = torch.nn.CrossEntropyLoss()
-learning_rate = 0.001
-optimizer = torch.optim.Adam(
-    params = model.parameters(),
-    lr = learning_rate
-)
-
-num_epochs = 20
-
 def train(
         model: Net,
-        num_epochs: int = 30
+        num_epochs: int = 30,
+        learning_rate: float = 0.001
 ) -> None:
     '''
     Trains a given model for a specific number of epochs
@@ -109,8 +103,15 @@ def train(
         model (Net): a PyTorch model based on torch.nn.Module
         epochs (int): number of epochs to train the model
     -Returns:
-        (None): Exports a model in .pt format
+        (None): Trains and exports a model in .pt format
     '''
+
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(
+        params = model.parameters(),
+        lr = learning_rate
+    )
+
     best_accuracy = 0
     for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
         for i, (images, labels) in enumerate(train_loader):
@@ -161,9 +162,20 @@ def train(
                 best_accuracy = accuracy
                 torch.save(model.state_dict(), "best_model.pt")
         
-        print(f"Accuracy {accuracy:.2f}")
+    print(f"Final Test Accuracy: {accuracy:.2f} %")
 
-def predict(image_num):
+
+def predict(
+        image_num: int
+) -> None:
+    '''
+    Run inference and plot an image with prediciton vs true label
+
+    -Args:
+        image_num (int): image number index
+    -Returns:
+        (None): Shows prediction
+    '''
     image, label = test_dataset[image_num]
     image = image.to(device)
 
@@ -179,3 +191,12 @@ def predict(image_num):
     plt.title(f"Model prediction: {test_dataset.classes[predicted_label.item()]}")
     plt.xlabel(f"True label: {train_dataset.classes[label]}")
     plt.show()
+
+
+model = Net().to(device)
+train(
+    model = model,
+    num_epochs = 30,
+    learning_rate = 0.001
+)
+predict(0)
