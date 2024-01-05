@@ -98,8 +98,19 @@ optimizer = torch.optim.Adam(
 
 num_epochs = 20
 
-def train(num_epochs):
-    
+def train(
+        model: Net,
+        num_epochs: int = 30
+) -> None:
+    '''
+    Trains a given model for a specific number of epochs
+
+    -Args:
+        model (Net): a PyTorch model based on torch.nn.Module
+        epochs (int): number of epochs to train the model
+    -Returns:
+        (None): Exports a model in .pt format
+    '''
     best_accuracy = 0
     for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
         for i, (images, labels) in enumerate(train_loader):
@@ -151,7 +162,6 @@ def train(num_epochs):
                 torch.save(model.state_dict(), "best_model.pt")
         
         print(f"Accuracy {accuracy:.2f}")
-
 
 def predict(image_num):
     image, label = test_dataset[image_num]
