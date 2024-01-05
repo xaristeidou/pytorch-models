@@ -91,19 +91,10 @@ class Net(torch.nn.Module):
         return x
     
 
-model = Net().to(device)
-criterion = torch.nn.CrossEntropyLoss()
-learning_rate = 0.001
-optimizer = torch.optim.Adam(
-    params = model.parameters(),
-    lr = learning_rate
-)
-
-num_epochs = 20
-
 def train(
         model: Net,
-        num_epochs: int = 30
+        num_epochs: int = 30,
+        learning_rate: float = 0.001
 ) -> None:
     '''
     Trains a given model for a specific number of epochs
@@ -112,8 +103,15 @@ def train(
         model (Net): a PyTorch model based on torch.nn.Module
         epochs (int): number of epochs to train the model
     -Returns:
-        (None): Exports a model in .pt format
+        (None): Trains and exports a model in .pt format
     '''
+
+    criterion = torch.nn.CrossEntropyLoss()
+    optimizer = torch.optim.Adam(
+        params = model.parameters(),
+        lr = learning_rate
+    )
+
     best_accuracy = 0
     for epoch in tqdm(range(num_epochs), desc = "Training process", unit = "Epoch"):
         for i, (images, labels) in enumerate(train_loader):
@@ -166,6 +164,7 @@ def train(
         
     print(f"Final Test Accuracy: {accuracy:.2f} %")
 
+
 def predict(
         image_num: int
 ) -> None:
@@ -192,3 +191,11 @@ def predict(
     plt.title(f"Model prediction: {test_dataset.classes[predicted_label.item()]}")
     plt.xlabel(f"True label: {train_dataset.classes[label]}")
     plt.show()
+
+
+model = Net().to(device)
+train(
+    model = model,
+    num_epochs = 30,
+    learning_rate = 0.001
+)
