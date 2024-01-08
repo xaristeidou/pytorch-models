@@ -48,26 +48,38 @@ class Net(torch.nn.Module):
     def __init__(self):
         super(Net, self).__init__()
 
-        self.conv1 = torch.nn.Conv2d(
+        self.conv1_1 = torch.nn.Conv2d(
             in_channels = 3,
             out_channels = 32,
             kernel_size = 3,
             padding = 1,
         )
-        self.conv2 = torch.nn.Conv2d(
+        self.conv1_2 = torch.nn.Conv2d(
             in_channels = 32,
             out_channels = 64,
             kernel_size = 3,
             padding = 1,
         )
+        self.conv2_1 = torch.nn.Conv2d(
+            in_channels = 3,
+            out_channels = 32,
+            kernel_size = 5,
+            padding = 2,
+        )
+        self.conv2_2 = torch.nn.Conv2d(
+            in_channels = 32,
+            out_channels = 64,
+            kernel_size = 5,
+            padding = 2,
+        )
         self.conv3 = torch.nn.Conv2d(
-            in_channels = 64,
-            out_channels = 128,
+            in_channels = 128,
+            out_channels = 256,
             kernel_size = 3,
             padding = 1,
         )
         self.fc1 = torch.nn.Linear(
-            in_features = 16 * 16 * 128,
+            in_features = 16 * 16 * 256,
             out_features = 512
         )
         self.fc2 = torch.nn.Linear(
@@ -76,10 +88,22 @@ class Net(torch.nn.Module):
         )
 
     def forward(self, x):
-        x = self.conv1(x)
-        x = torch.nn.functional.relu(x)
-        x = self.conv2(x)
-        x = torch.nn.functional.relu(x)
+        # branch 1
+        x1 = self.conv1_1(x)
+        x1 = torch.nn.functional.relu(x1)
+        x1 = self.conv1_2(x1)
+        x1 = torch.nn.functional.relu(x1)
+        
+        # branch 2
+        x2 = self.conv2_1(x)
+        x2 = torch.nn.functional.relu(x2)
+        x2 = self.conv2_1(x2)
+        x2 = torch.nn.functional.relu(x2)
+
+        # concatenation
+        x = torch.cat((x1,x2), dim = 1)
+
+        # merged
         x = self.conv3(x)
         x = torch.nn.functional.relu(x)
         x = torch.nn.functional.max_pool2d(x, 2)
@@ -87,6 +111,7 @@ class Net(torch.nn.Module):
         x = self.fc1(x)
         x = torch.nn.functional.relu(x)
         x = self.fc2(x)
+
 
         return x
     
