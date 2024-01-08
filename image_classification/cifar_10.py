@@ -100,7 +100,12 @@ class Net(torch.nn.Module):
         x2 = self.conv2_1(x2)
         x2 = torch.nn.functional.relu(x2)
 
-        
+        # concatenation
+        x = torch.cat((x1,x2), dim = 1)
+
+        # merged
+        x = self.conv3(x)
+        x = torch.nn.functional.relu(x)
         x = torch.nn.functional.max_pool2d(x, 2)
         x = x.view(x.size(0), -1)
         x = self.fc1(x)
