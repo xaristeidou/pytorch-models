@@ -97,7 +97,7 @@ class Net(torch.nn.Module):
         # branch 2
         x2 = self.conv2_1(x)
         x2 = torch.nn.functional.relu(x2)
-        x2 = self.conv2_1(x2)
+        x2 = self.conv2_2(x2)
         x2 = torch.nn.functional.relu(x2)
 
         # concatenation
