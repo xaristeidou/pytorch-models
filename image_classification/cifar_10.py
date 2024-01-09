@@ -127,7 +127,19 @@ class Net(torch.nn.Module):
         self.avgpool = nn.AdaptiveAvgPool2d((1,1))
         self.fc = nn.Linear(512 * block.expansion, num_classes)
 
-    
+    def _make_layer(
+            self,
+            block,
+            out_channels,
+            blocks,
+            stride: int = 1
+    ):
+        layers = []
+        layers.append(block(self.in_channels, out_channels, stride))
+        self.in_channels = out_channels * block.expansion
+        for _ in range(1, blocks):
+            layers.append(block(self.in_channels, out_channels))
+        return nn.Sequential(*layers)
 
 def train(
         model: Net,
