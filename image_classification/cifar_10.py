@@ -102,80 +102,22 @@ class Block(nn.Module):
         out = self.relu(out)
 
         return out
+    
 
 class Net(torch.nn.Module):
     '''
     Image classification model, class object, used for CIFAR-10 dataset
     '''
-    def __init__(self):
+    def __init__(
+            self,
+            block,
+            layers,
+            num_classes:int = 10
+    ):
         super(Net, self).__init__()
 
-        self.conv1_1 = torch.nn.Conv2d(
-            in_channels = 3,
-            out_channels = 32,
-            kernel_size = 3,
-            padding = 1,
-        )
-        self.conv1_2 = torch.nn.Conv2d(
-            in_channels = 32,
-            out_channels = 64,
-            kernel_size = 3,
-            padding = 1,
-        )
-        self.conv2_1 = torch.nn.Conv2d(
-            in_channels = 3,
-            out_channels = 32,
-            kernel_size = 5,
-            padding = 2,
-        )
-        self.conv2_2 = torch.nn.Conv2d(
-            in_channels = 32,
-            out_channels = 64,
-            kernel_size = 5,
-            padding = 2,
-        )
-        self.conv3 = torch.nn.Conv2d(
-            in_channels = 128,
-            out_channels = 256,
-            kernel_size = 3,
-            padding = 1,
-        )
-        self.fc1 = torch.nn.Linear(
-            in_features = 16 * 16 * 256,
-            out_features = 512
-        )
-        self.fc2 = torch.nn.Linear(
-            in_features = 512,
-            out_features = 10
-        )
-
-    def forward(self, x):
-        # branch 1
-        x1 = self.conv1_1(x)
-        x1 = torch.nn.functional.relu(x1)
-        x1 = self.conv1_2(x1)
-        x1 = torch.nn.functional.relu(x1)
-        
-        # branch 2
-        x2 = self.conv2_1(x)
-        x2 = torch.nn.functional.relu(x2)
-        x2 = self.conv2_2(x2)
-        x2 = torch.nn.functional.relu(x2)
-
-        # concatenation
-        x = torch.cat((x1,x2), dim = 1)
-
-        # merged
-        x = self.conv3(x)
-        x = torch.nn.functional.relu(x)
-        x = torch.nn.functional.max_pool2d(x, 2)
-        x = x.view(x.size(0), -1)
-        x = self.fc1(x)
-        x = torch.nn.functional.relu(x)
-        x = self.fc2(x)
 
 
-        return x
     
 
 def train(
