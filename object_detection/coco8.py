@@ -14,3 +14,9 @@ class ObjectDetector(nn.Module):
         super(ObjectDetector, self).__init__()
 
         self.backbone = torchvision.models.resnet50(pretrained=True)
+
+
+
+    def forward(self): # TODO create the structure when model is ready
+
+        return x
