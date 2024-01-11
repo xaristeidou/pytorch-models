@@ -29,3 +29,7 @@ model = ObjectDetector()
 criterion = nn.SmoothL1Loss()
 optimizer = torch.optim.Adam(model.parameters(), lr = 0.001)
 
+dummy_input = torch.randn(1,3,224,224)
+output = model(dummy_input)
+
+print(model)
