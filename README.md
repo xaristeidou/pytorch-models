@@ -13,3 +13,7 @@ Details about models will be added as soon as models are ready for production.
 ## Object segmentation
 
 Details about models will be added as soon as models are ready for production.
+
+## Pose estimation
+
+Details about models will be added as soon as models are ready for production.
