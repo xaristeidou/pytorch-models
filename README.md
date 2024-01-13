@@ -1,6 +1,6 @@
 # 🔥 PyTorch models
 
-A repository for custom PyTorch models regarding Computer Vision tasks.
+A repository for custom PyTorch models regarding Computer Vision tasks. All models will be able to be trained locally by choosing different parameters regarding optimizers, epochs, learning rate schedulers, model layers size, etc.
 
 ## Image classification
 
